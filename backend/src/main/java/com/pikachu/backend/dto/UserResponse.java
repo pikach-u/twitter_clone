@@ -18,6 +18,9 @@ public class UserResponse {
     // private String fullName;
     private String profileImageUrl;
     private String bio;
+    private Long followersCount;
+    private Long followingCount;
+    private boolean isFollowing;
 
     private String accessToken;
     private String refreshToken;

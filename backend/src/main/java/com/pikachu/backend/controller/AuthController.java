@@ -20,10 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    /**
-     * 회원가입 API
-     * POST /api/auth/register
-     */
+    // 회원가입 API
+    // POST /api/auth/register
+
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(
             @Valid @RequestBody RegisterRequest request
@@ -32,10 +31,10 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * 로그인 API
-     * POST /api/auth/login
-     */
+
+    // 로그인 API
+    // POST /api/auth/login
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @Valid @RequestBody AuthRequest request
