@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -29,8 +31,8 @@ public class Post {
 //    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Comment> comments = new ArrayList<>();
 //
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Like> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -39,9 +41,9 @@ public class Post {
     private LocalDateTime updatedAt;
 
     // 편의 메서드
-//    public int getLikeCount() {
-//        return likes.size();
-//    }
+    public int getLikeCount() {
+        return likes.size();
+    }
 //
 //    public int getCommentCount() {
 //        return comments.size();

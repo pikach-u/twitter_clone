@@ -2,6 +2,7 @@ package com.pikachu.backend.dto;
 
 // 사용자 응답 DTO
 
+import com.pikachu.backend.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,5 +25,17 @@ public class UserResponse {
 
     private String accessToken;
     private String refreshToken;
+
+    public static UserResponse from(User user) {
+        return UserResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .profileImageUrl(user.getProfileImageUrl())
+                .bio(user.getBio())
+                .followersCount(user.getFollowersCount())
+                .followingCount(user.getFollowingsCount())
+                .build();
+    }
 
 }

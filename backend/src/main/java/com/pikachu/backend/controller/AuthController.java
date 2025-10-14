@@ -4,6 +4,7 @@ package com.pikachu.backend.controller;
 
 import com.pikachu.backend.dto.AuthRequest;
 import com.pikachu.backend.dto.AuthResponse;
+import com.pikachu.backend.dto.RefreshTokenRequest;
 import com.pikachu.backend.dto.RegisterRequest;
 import com.pikachu.backend.service.AuthService;
 import jakarta.validation.Valid;
@@ -39,19 +40,19 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(
             @Valid @RequestBody AuthRequest request
     ) {
-        AuthResponse response = authService.login(request);
+        AuthResponse response = authService.authenticate(request);
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * 토큰 갱신 API
-     * POST /api/auth/refresh
-     */
-    @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refreshToken(
-            @Valid @RequestBody RefreshTokenRequest request
-    ) {
-        AuthResponse response = authService.refreshToken(request);
-        return ResponseEntity.ok(response);
-    }
+
+    // 토큰 갱신 API
+    // POST /api/auth/refresh
+
+//    @PostMapping("/refresh")
+//    public ResponseEntity<AuthResponse> refreshToken(
+//            @Valid @RequestBody RefreshTokenRequest request
+//    ) {
+//        AuthResponse response = authService.refreshToken(request);
+//        return ResponseEntity.ok(response);
+//    }
 }

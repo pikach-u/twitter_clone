@@ -10,7 +10,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.security.AuthProvider;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -39,6 +38,9 @@ public class User implements UserDetails {
 
     private String bio;
 
+    private Long followersCount;
+    private Long followingsCount;
+
     @Column(name = "profile_image_url", columnDefinition = "TEXT")
     private String profileImageUrl;
 
@@ -53,6 +55,8 @@ public class User implements UserDetails {
 
     private boolean enabled;
 
+    @PrePersist
+    protected void onCreate() { enabled = true; }   // 회원가입 시 자동으로 true
 
     // 기본 사용자 권한 부여
     @Override
