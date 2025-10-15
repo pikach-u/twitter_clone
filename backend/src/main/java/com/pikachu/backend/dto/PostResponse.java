@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class PostResponse {
     private Long id;
     private String content;
-    private UserResponse author;
+    private UserResponse user;
     private int likeCount;
     private int commentCount;
     private LocalDateTime createdAt;
@@ -23,7 +23,7 @@ public class PostResponse {
         return PostResponse.builder()
                 .id(post.getId())
                 .content(post.getContent())
-                .author(UserResponse.from(post.getAuthor()))
+                .user(UserResponse.from(post.getAuthor()))
 //                .likeCount(post.getLikeCount())
 //                .commentCount(post.getCommentCount())
                 .createdAt(post.getCreatedAt())
