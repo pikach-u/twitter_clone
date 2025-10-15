@@ -27,8 +27,8 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
 
-//    @Value("${frontend.url}")
-//    private String frontendUrl;
+    @Value("${frontend.url}")
+    private String frontendUrl;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -54,9 +54,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {  // CORS 설정
         CorsConfiguration configuration = new CorsConfiguration();
-        // configuration.setAllowedOrigins(List.of(frontendUrl));
+        configuration.setAllowedOrigins(List.of(frontendUrl));  // frontend Url만 허용
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
