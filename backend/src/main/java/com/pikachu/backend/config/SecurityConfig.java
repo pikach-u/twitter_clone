@@ -3,6 +3,7 @@ package com.pikachu.backend.config;
 // Spring Security 설정
 
 import com.pikachu.backend.security.JwtAuthenticationFilter;
+import com.pikachu.backend.security.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Value("${frontend.url}")
     private String frontendUrl;
@@ -45,6 +47,9 @@ public class SecurityConfig {
                                         "/error"
                                 ).permitAll()
                                 .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2SuccessHandler)
                 )
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
