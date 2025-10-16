@@ -28,7 +28,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create        # 테이블 자동 생성/업데이트
+      ddl-auto: update        # 테이블 자동 생성/업데이트
     show-sql: true
 
 jwt:
