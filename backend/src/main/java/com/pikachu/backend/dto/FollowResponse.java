@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FollowResponse {
 
-    private boolean isFollowing;
-
+    private boolean following;
     private Long followersCount;
-
     private Long followingCount;
 }

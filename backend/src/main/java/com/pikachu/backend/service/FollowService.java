@@ -1,5 +1,6 @@
 package com.pikachu.backend.service;
 
+import com.pikachu.backend.dto.FollowResponse;
 import com.pikachu.backend.dto.UserResponse;
 import com.pikachu.backend.entity.Follow;
 import com.pikachu.backend.entity.User;
@@ -22,7 +23,7 @@ public class FollowService {
     private final UserRepository userRepository;
 
     // 팔로우 토글
-    public boolean toggleFollow(Long targetUserId, String currentUsername) {
+    public FollowResponse toggleFollow(Long targetUserId, String currentUsername) {
         User currentUser = userRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new ResourceNotFoundException("사용자를 찾을 수 없습니다"));
 
@@ -39,18 +40,29 @@ public class FollowService {
                 currentUser, targetUser
         );
 
+        boolean isFollowing;
+
         if (existingFollow.isPresent()) {
             // 언팔로우
             followRepository.delete(existingFollow.get());
-            return false;
+            isFollowing = false;
         } else {
             // 팔로우
             Follow follow = new Follow();
             follow.setFollower(currentUser);
             follow.setFollowing(targetUser);
             followRepository.save(follow);
-            return true;
+            isFollowing = true;
         }
+
+        Long followersCount = followRepository.countFollowers(targetUser);
+        Long followingCount = followRepository.countFollowing(targetUser);
+
+        return FollowResponse.builder()
+                .following(isFollowing)
+                .followersCount(followersCount)
+                .followingCount(followingCount)
+                .build();
     }
 
     // 팔로워 목록 조회

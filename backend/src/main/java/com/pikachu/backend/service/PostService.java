@@ -120,6 +120,6 @@ public class PostService {
     }
 
     public Long getUserPostCount(Long userId) {
-        return postRepository.countByAuthorId(userId);
+        return postRepository.countByUserIdAndNotDeleted(userId);
     }
 }

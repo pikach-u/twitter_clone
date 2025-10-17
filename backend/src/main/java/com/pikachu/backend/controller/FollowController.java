@@ -22,9 +22,9 @@ public class FollowController {
     private final FollowService followService;
 
     @PostMapping("/{targetUserId}/follow")
-    public ResponseEntity<Boolean> toggleFollow(@PathVariable Long targetUserId, Authentication auth) {
+    public ResponseEntity<FollowResponse> toggleFollow(@PathVariable Long targetUserId, Authentication auth) {
         String currentUsername = auth.getName();
-        boolean response = followService.toggleFollow(targetUserId, currentUsername);
+        FollowResponse response = followService.toggleFollow(targetUserId, currentUsername);
         return ResponseEntity.ok(response);
     }
 

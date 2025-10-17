@@ -1,9 +1,7 @@
 package com.pikachu.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,9 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "posts")
-@Getter
-@Setter
+@Table(name = "posts",
+        indexes = {
+                @Index(name = "idx_post_user_id", columnList = "user_id"),
+                @Index(name = "idx_post_created_at", columnList = "created_at"),
+                @Index(name = "idx_post_user_created_deleted", columnList = "user_id, created_at, is_deleted"),
+        })
+@Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Post {
     @Id
@@ -27,6 +31,10 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
+
+    @Column(name = "is_deleted")
+    @Builder.Default
+    private boolean deleted = false;
 
 //    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Comment> comments = new ArrayList<>();

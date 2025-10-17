@@ -29,6 +29,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p WHERE p.author.id = :userId ORDER BY p.createdAt DESC")
     Page<Post> findByAuthorId(@Param("userId") Long userId, Pageable pageable);
 
-    @Query("SELECT COUNT(p) FROM Post p WHERE p.user.id = :userId AND p.deleted = false")
-    long countByAuthorId(@Param("userId") Long userId);
+    @Query("SELECT COUNT(p) FROM Post p WHERE p.author.id = :userId AND p.deleted = false")
+    long countByUserIdAndNotDeleted(@Param("userId") Long userId);
 }
