@@ -20,24 +20,24 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
                                                 @Param("following") User following);
 
 
-    // 특정 사용자의 팔로워 목록 조회
+    // 특정 사용자의 팔로잉 목록 조회
     @Query("SELECT f FROM Follow f WHERE f.following = :following ORDER BY f.createdAt DESC")
     List<Follow> findByFollowing(@Param("following") User following);
 
 
-    // 특정 사용자의 팔로잉 목록 조회
+    // 특정 사용자의 팔로워 목록 조회
     @Query("SELECT f FROM Follow f WHERE f.follower = :follower ORDER BY f.createdAt DESC")
     List<Follow> findByFollower(@Param("follower") User follower);
 
 
-    // 특정 사용자의 팔로워 수 조회
-    @Query("SELECT COUNT(f) FROM Follow f WHERE f.following = :following")
-    long countByFollowing(@Param("following") User following);
-
-
     // 특정 사용자의 팔로잉 수 조회
+    @Query("SELECT COUNT(f) FROM Follow f WHERE f.following = :following")
+    long countFollowing(@Param("following") User following);
+
+
+    // 특정 사용자의 팔로워 수 조회
     @Query("SELECT COUNT(f) FROM Follow f WHERE f.follower = :follower")
-    long countByFollower(@Param("follower") User follower);
+    long countFollowers(@Param("follower") User follower);
 
 
     // 특정 사용자의 팔로우 관계 여부 확인

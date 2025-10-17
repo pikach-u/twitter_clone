@@ -7,6 +7,7 @@ import com.pikachu.backend.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -40,6 +43,25 @@ public class PostController {
             Pageable pageable) {
         Page<PostResponse> posts = postService.getPosts(pageable);
         return ResponseEntity.ok(posts);
+    }
+    
+    // 사용자 게시물 조회
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Page<PostResponse>> getUserPosts(
+            @PathVariable Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PostResponse> posts = postService.getUserPosts(userId, pageable);
+        return ResponseEntity.ok(posts);
+    }
+
+    // 사용자 게시물 갯수
+    @GetMapping("/user/{userId}/count")
+    public ResponseEntity<Map<String, Long>> getUserPostCount(@PathVariable Long userId) {
+        Long count = postService.getUserPostCount(userId);
+        return ResponseEntity.ok(Map.of("count", count));
     }
 
     // 특정 게시물 조회

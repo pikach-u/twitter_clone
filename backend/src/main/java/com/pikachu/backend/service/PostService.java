@@ -10,9 +10,15 @@ import com.pikachu.backend.repository.PostRepository;
 import com.pikachu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,5 +87,39 @@ public class PostService {
         }
 
         postRepository.delete(post);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostResponse> getPostsByUserId(Long userId) {
+        return postRepository.findByAuthorId(userId, PageRequest.of(0,20))
+                .getContent()
+                .stream()
+                .map(PostResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    public Page<PostResponse> getUserPosts(Long userId, Pageable pageable) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new ResourceNotFoundException("Current user not found"));
+
+        Page<Post> posts = postRepository.findByAuthorId(userId, pageable);
+        return posts.map(post -> {
+            PostResponse response = PostResponse.from(post);
+//            Long likeCount = likeRepository.countByPostId(post.getId());
+//            boolean isLiked = likeRepository.existsByUserAndPost(currentUser, post);
+//            Long commentCount = commentRepository.countByPostId(post.getId());
+
+//            response.setLikeCount(likeCount);
+//            response.setLiked(isLiked);
+//            response.setCommentCount(commentCount);
+
+            return response;
+        });
+    }
+
+    public Long getUserPostCount(Long userId) {
+        return postRepository.countByAuthorId(userId);
     }
 }
